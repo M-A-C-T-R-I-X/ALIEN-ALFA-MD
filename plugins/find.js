@@ -5,12 +5,13 @@ const acrcloud = require("acrcloud")
 command(
 {
 pattern : "find",
-fromMe: true,  
+fromMe: isPrivate,  
 desc : "yts player",
 type : "music",
  },
  
  async (message, match, m) => {
+  try{
  if (!m.quoted.message.videoMessage && !m.quoted.message.audioMessage)
       return await message.sendMessage("*Need Video! Or Audio*");
 	
@@ -43,6 +44,10 @@ ID : ${id}`
 message.reply(e)
 }
  
+} catch (error) {
+  console.error("[Error]:", error);
+}
+
 })
 async function syt(res){
 const filters = await ytsr.getFilters(res);

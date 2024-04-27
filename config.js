@@ -1,6 +1,9 @@
 const toBool = (x) => x == 'true'
 const { Sequelize } = require('sequelize')
 const { existsSync } = require('fs')
+
+
+
 if (existsSync('config.env')) require('dotenv').config({ path: './config.env' })
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 module.exports = {
@@ -29,5 +32,5 @@ module.exports = {
   HEROKU_API_KEY: process.env.HEROKU_API_KEY || " ",
   OWNER_NAME: process.env.OWNER_NAME || "𝞓𝙇𝞘𝞢𝞜-𝞓𝙇𝙁𝞓",
   BOT_NAME: process.env.BOT_NAME || "𝗔𝗨𝗥𝗢𝗥𝗔",
-  WORK_TYPE: process.env.WORK_TYPE || "private",
+  WORKTYPE: process.env.WORKTYPE === undefined ? "public" : process.env.WORKTYPE,
 };

@@ -6,11 +6,12 @@ const fs = require("fs-extra")
 command(
   {
     pattern: "sticker ?(.*)",
-    fromMe: true,  
+    fromMe: isPrivate,  
     desc: "_Converts Photo or video to sticker_",
     type: "converter",
   },
   async (message, match, m , conn) => {
+    try{
     if (!(message.reply_message.video || message.reply_message.image))
       return await message.reply("_Reply to photo or video_");
     let buff = await m.quoted.download();
@@ -21,17 +22,21 @@ command(
       "sticker"
     );
    
+  } catch (error) {
+    console.error("[Error]:", error);
+  }
   }
 );
 
 command(
   {
     pattern: "tgs ?(.*)",
-    fromMe: true,  
+    fromMe: isPrivate,  
     desc: "Download Sticker From Telegram",
     type: "Tool",
   },
   async (message, match) => {
+    try{
     if (!match)
       return message.reply(
         "_Enter a tg sticker url_\nEg: https://t.me/addstickers/Oldboyfinal\nKeep in mind that there is a chance of ban if used frequently"
@@ -60,21 +65,25 @@ command(
       );
       sleep(1500);
     }
+  } catch (error) {
+    console.error("[Error]:", error);
+  }
   }
 );
 
 command(
   {
     pattern: "take ?(.*)",
-    fromMe: true,  
+    fromMe: isPrivate,  
     desc: "Changes Exif data of stickers",
     type: "tool",
   },
   async (message, match, m) => {
+    try{
     if (!message.reply_message && !message.reply_message.sticker)
       return await message.reply("_Reply to sticker_");
     let buff = await m.quoted.download();
-    let [packname, author] = match.split(",");
+    let [packname, author] = match.split(":");
     await message.sendMessage(
       buff,
       {
@@ -83,22 +92,29 @@ command(
       },
       "sticker"
     );
+  } catch (error) {
+    console.error("[Error]:", error);
+  }
   }
 );
 
 command(
   {
     pattern: "getexif ?(.*)",
-    fromMe: true,  
+    fromMe: isPrivate,  
     desc: "description",
     type: "type",
   },
   async (message, match, m) => {
+    try{
     if (!message.reply_message || !message.reply_message.sticker)
       return await message.reply("_Reply to sticker_");
     let img = new Image();
     await img.load(await m.quoted.download());
     const exif = JSON.parse(img.exif.slice(22).toString());
     await message.reply(exif);
+  } catch (error) {
+    console.error("[Error]:", error);
+  }
   }
 );

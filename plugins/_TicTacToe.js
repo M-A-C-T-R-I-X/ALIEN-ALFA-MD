@@ -1,14 +1,15 @@
-/*
 
+/*
 const { command, isAdmin, parseJid, isPrivate } = require("../lib");
 command(
   {
     pattern: "delttt",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "delete TicTacToe running game.",
     type: "game",
   },
   async (message, match, m) => {
+    try{
     let isadmin = await isAdmin(message.jid, message.user, message.client);
 
     if (!isadmin)
@@ -24,17 +25,21 @@ command(
     } else {
       return message.reply(`No TicTacToe game🎮 is running.`);
     }
+          } catch (error) {
+        console.error("[Error]:", error);
+      }
   }
 );
 
 command(
   {
     pattern: "ttt ?(.*)",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "Play TicTacToe",
     type: "game",
   },
   async (message, match, m) => {
+    try{
     let { prefix } = message;
     {
       let TicTacToe = require("../../lib/tictactoe");
@@ -95,17 +100,21 @@ Current turn: @${room.game.currentTurn.split("@")[0]}
         this.game[room.id] = room;
       }
     }
+          } catch (error) {
+        console.error("[Error]:", error);
+      }
   }
 );
 
 command(
   {
     on: "text",
-    fromMe: true,
+    fromMe: false,
     pattern: false,
     dontAddCommandList: true,
   },
   async (message, match, m) => {
+    try{
     let { prefix } = message;
     this.game = this.game ? this.game : {};
     let room = Object.values(this.game).find(
@@ -197,6 +206,9 @@ ${
         delete this.game[room.id];
       }
     }
+          } catch (error) {
+        console.error("[Error]:", error);
+      }
   }
 );
 

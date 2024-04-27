@@ -20,12 +20,15 @@ command({
     dontAddCommandList: true,
     type: 'owner'
 }, async (message, match) => {
+    try{
     let isHeroku = false; // Adjust based on your conditions
-
     if (isHeroku) {
         await message.UpdateHeroku(message);
     } else {
         await message.UpdateLocal(message);
     }
+} catch (error) {
+  console.error("[Error]:", error);
+}
 });
 
